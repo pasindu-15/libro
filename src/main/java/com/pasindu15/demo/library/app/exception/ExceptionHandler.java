@@ -1,0 +1,143 @@
+package com.pasindu15.demo.library.app.exception;
+
+import com.pasindu15.demo.library.app.exception.type.BaseException;
+import com.pasindu15.demo.library.app.validator.RequestEntityInterface;
+import com.pasindu15.demo.library.app.exception.type.ValidationException;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.WebRequest;
+
+import javax.validation.ConstraintViolation;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
+@Component
+public class ExceptionHandler extends DefaultErrorAttributes {
+
+    @Override
+    public Map<String, Object> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace) {
+        Throwable error = getError(webRequest);
+        switch (error.getClass().getSimpleName()){
+            case "ValidationException":
+                return handleValidationException((ValidationException)error);
+            case "ControllerException":
+            case "FilterException":
+            case "DomainException":
+            case "WebClientException":
+                return handleRecoverableException((BaseException)error, includeStackTrace);
+            default:
+                return handleGenericException(error, includeStackTrace);
+        }
+    }
+
+    /**
+     * Handle validation exceptions
+     *
+     * @param error exception
+     * @return error description
+     */
+    private Map<String, Object> handleValidationException(ValidationException error) {
+
+        Map<String, Object> errorDetails = new LinkedHashMap<>();
+
+        errorDetails.put("code", "400");
+        errorDetails.put("type", error.getClass().getSimpleName());
+        errorDetails.put("message", this.formatValidationErrors(error.getErrors()));
+
+        return errorDetails;
+    }
+
+    /**
+     * Handle unrecoverable and more generic exceptions
+     *
+     * @param error exception
+     * @return error description
+     */
+    private Map<String, Object> handleGenericException(Throwable error, boolean includeStackTrace) {
+
+        Map<String, Object> errorDetails = new LinkedHashMap<>();
+
+        errorDetails.put("code", "400");
+        errorDetails.put("type", error.getClass().getSimpleName());
+        errorDetails.put("message", error.getMessage());
+
+        if (includeStackTrace) {
+            errorDetails.put("trace", this.getStackTrace(error));
+        }
+
+        return errorDetails;
+    }
+
+    /**
+     * Handle recoverable exceptions
+     *
+     * @param error exception
+     * @return error description
+     */
+    private Map<String, Object> handleRecoverableException(BaseException error,
+                                                           boolean includeStackTrace) {
+
+        Map<String, Object> errorDetails = new LinkedHashMap<>();
+
+        errorDetails.put("code", error.getCode() != null ? error.getCode() : "400");
+        errorDetails.put("type", error.getClass().getSimpleName());
+        errorDetails.put("message", error.getMessage());
+
+        if (includeStackTrace) {
+            errorDetails.put("trace", this.getStackTrace(error));
+        }
+
+        return errorDetails;
+    }
+
+
+    /**
+     * Get stack trace from an exception
+     *
+     * @param error exception
+     * @return stack trace
+     */
+    private String getStackTrace(Throwable error) {
+
+        StringWriter stackTrace = new StringWriter();
+        error.printStackTrace(new PrintWriter(stackTrace));
+        stackTrace.flush();
+
+        return stackTrace.toString();
+    }
+
+
+    private Map<String, ArrayList<String>> formatValidationErrors(Set<ConstraintViolation<RequestEntityInterface>> errors) {
+
+        Map<String, ArrayList<String>> errDetails = new LinkedHashMap<>();
+
+        errors.forEach(error -> {
+
+            String key = error.getPropertyPath().toString();
+            String val = error.getMessage();
+
+            // when a validation error already exists for the field
+            if(errDetails.containsKey(key)) {
+
+                ArrayList<String> arrVal = errDetails.get(key);
+                arrVal.add(val);
+
+                errDetails.put(key, arrVal);
+
+                return;
+            }
+
+            // when there are no validation errors for the field
+            ArrayList<String> arr = new ArrayList<>();
+            arr.add(val);
+
+            errDetails.put(key, arr);
+        });
+
+        return errDetails;
+    }
+}

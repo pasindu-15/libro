@@ -1,7 +1,6 @@
 package com.pasindu15.demo.library.domain.exception;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import com.pasindu15.demo.library.application.exception.type.BaseException;
+import com.pasindu15.demo.library.app.exception.type.BaseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

@@ -1,9 +1,7 @@
-package com.pasindu15.demo.library.application.transport.response.transformers;
+package com.pasindu15.demo.library.app.transport.response.transformers;
 
-import com.pasindu15.demo.library.application.transformer.ResponseEntityInterface;
-import com.pasindu15.demo.library.application.transformer.ResponseEntityTransformer;
+import com.pasindu15.demo.library.app.transformer.ResponseEntityInterface;
 import com.pasindu15.demo.library.domain.entities.Book;
-import com.pasindu15.demo.library.domain.entities.dto.BookResponseCoreEntity;
 
 import java.util.HashMap;
 import java.util.Map;

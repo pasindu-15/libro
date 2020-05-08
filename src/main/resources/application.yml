@@ -1,0 +1,24 @@
+server:
+  port: 8080
+base-url:
+  context: /api/library/v1.0/book
+
+spring:
+  profiles:
+    active: prod
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+#    url: jdbc:mysql://localhost/library
+    username: root
+    password:
+    maxIdle: "10"
+    maxActive: "20"
+    maxWait: "2000"
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+
+log:
+  identifierKey: UUID
