@@ -91,7 +91,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/library/v1.0/book/findAllBooks",
+					"raw": "http://localhost:8080/api/library/v1.0/book/findAll",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -102,7 +102,46 @@
 						"library",
 						"v1.0",
 						"book",
-						"findAllBooks"
+						"findAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Book",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/library/v1.0/book/delete/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"library",
+						"v1.0",
+						"book",
+						"delete",
+						"5"
 					]
 				}
 			},

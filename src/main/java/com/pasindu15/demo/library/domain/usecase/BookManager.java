@@ -8,6 +8,7 @@ import com.pasindu15.demo.library.domain.exception.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -23,30 +24,37 @@ public class BookManager {
     BookResponseCoreEntity bookResponse;
 
     public BookResponseCoreEntity add(Book book) throws DomainException {
-        logger.info("START ADD BOOK..." );
-        try {
-            bookRepository.save(book);
-        }catch (Exception ex){
-            throw  domainError("Book Add operation Failure","0001");
-        }
+        bookRepository.save(book);
 
         bookResponse.setCode("0000");
         bookResponse.setMessage("Success");
         bookResponse.setData("BookId :"+book.getId());
 
-        logger.info("END ADD BOOK..." );
         return bookResponse;
     }
 
     public Book findBookById(Integer id)throws DomainException{
         Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent()){
-            throw  domainError("Book not found","0002");
+            throw  domainError("Book not found","0001");
         }
         return book.get();
     }
     public List<Book> getAllBooks()throws DomainException{
         return bookRepository.findAll();
+    }
+
+    public BookResponseCoreEntity deleteBook(Integer id) throws Exception{
+        try {
+            bookRepository.deleteById(id);
+        }catch (Exception ex){
+            throw domainError("0002","Book not found for given id");
+        }
+
+        bookResponse.setCode("0000");
+        bookResponse.setMessage("Success");
+        bookResponse.setData("BookId :"+id);
+        return bookResponse;
     }
 
     private DomainException domainError(String code, String msg){

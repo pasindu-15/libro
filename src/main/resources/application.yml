@@ -1,7 +1,7 @@
 server:
   port: 8080
 base-url:
-  context: /api/library/v1.0/book
+  context: /api/library/v1.0
 
 spring:
   profiles:
