@@ -1,12 +1,14 @@
 HELP.md
-/target/
+target/
 !.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
 
 ### STS ###
 .apt_generated
 .classpath
 .factorypath
-.microServiceName
+.project
 .settings
 .springBeans
 .sts4-cache
@@ -23,10 +25,7 @@ HELP.md
 /dist/
 /nbdist/
 /.nb-gradle/
-/build/
+build/
 
 ### VS Code ###
 .vscode/
-
-.idea/
-target/
