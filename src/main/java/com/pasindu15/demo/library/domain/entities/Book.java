@@ -1,14 +1,11 @@
 package com.pasindu15.demo.library.domain.entities;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 public class Book {
@@ -20,6 +17,15 @@ public class Book {
     private LocalDateTime dateTime;
     private String type;
     private String author;
+
+
+    public Book(){
+    }
+    public Book(String name, String type, String author) {
+        this.name = name;
+        this.type = type;
+        this.author = author;
+    }
 
     public Integer getId() {
         return id;

@@ -13,8 +13,6 @@ public class ResponseEntityTransformer {
     }
 
     public List<Map> transform(List<?> entityList, ResponseEntityInterface transformer){
-        return entityList.stream().map(entity -> {
-            return transformer.transform(entity);
-        }).collect(Collectors.toList());
+        return entityList.stream().map(transformer::transform).collect(Collectors.toList());
     }
 }

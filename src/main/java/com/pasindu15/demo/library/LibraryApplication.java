@@ -1,13 +1,9 @@
 package com.pasindu15.demo.library;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import javax.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.TimeZone;
 
 @SpringBootApplication
 public class LibraryApplication {

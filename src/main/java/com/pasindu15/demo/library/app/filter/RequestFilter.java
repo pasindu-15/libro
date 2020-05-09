@@ -21,10 +21,8 @@ public class RequestFilter implements Filter {
                 "/actuator/prometheus"
         };
         HttpServletRequest req = (HttpServletRequest)request;
-        HttpServletResponse res = (HttpServletResponse) response;
 
         List<String> contentType = Collections.list(req.getHeaders(HttpHeaders.CONTENT_TYPE));
-        String endpoint = req.getPathInfo();
 
         //check ignore routes
         if(Arrays.asList(ignoreRoutes).contains(ignoreRoutes)){

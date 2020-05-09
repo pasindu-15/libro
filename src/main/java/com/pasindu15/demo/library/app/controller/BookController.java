@@ -8,6 +8,7 @@ import com.pasindu15.demo.library.app.validator.RequestEntityValidator;
 import com.pasindu15.demo.library.app.transport.request.entities.BookRequestEntity;
 import com.pasindu15.demo.library.domain.entities.Book;
 import com.pasindu15.demo.library.domain.entities.dto.BookResponseCoreEntity;
+import com.pasindu15.demo.library.domain.exception.DomainException;
 import com.pasindu15.demo.library.domain.usecase.BookManager;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class BookController extends BaseController {
     ResponseEntityTransformer transformer;
 
     @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map> findBook(@Validated @PathVariable Integer id,HttpServletRequest request)throws Exception{
+    public ResponseEntity<Map> findBook(@Validated @PathVariable Integer id,HttpServletRequest request)throws DomainException {
         setLogIdentifier(request);
         Book book = bookManager.findBookById(id);
         Map trBook = transformer.transform(book,new BookResponseTransformer());
@@ -45,7 +46,7 @@ public class BookController extends BaseController {
     }
 
     @PostMapping(value="/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map> integration(@RequestBody(required = true) BookRequestEntity bookRequestEntity, HttpServletRequest request)throws Exception{
+    public ResponseEntity<Map> integration(@RequestBody(required = true) BookRequestEntity bookRequestEntity, HttpServletRequest request)throws DomainException{
 
         setLogIdentifier(request);
         validator.validate(bookRequestEntity);
@@ -61,7 +62,7 @@ public class BookController extends BaseController {
 
     }
     @GetMapping(value = "/findAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Map>> findAllBook(HttpServletRequest request)throws Exception{
+    public ResponseEntity<List<Map>> findAllBook(HttpServletRequest request){
         setLogIdentifier(request);
         List<Book> books = bookManager.getAllBooks();
         List<Map> trBooks = transformer.transform(books,new BookResponseTransformer());
@@ -69,7 +70,7 @@ public class BookController extends BaseController {
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map> deleteBook(@Validated @PathVariable Integer id,HttpServletRequest request)throws Exception{
+    public ResponseEntity<Map> deleteBook(@Validated @PathVariable Integer id,HttpServletRequest request)throws DomainException{
         setLogIdentifier(request);
 
         BookResponseCoreEntity deleteBookResponse = bookManager.deleteBook(id);

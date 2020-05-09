@@ -9,7 +9,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 public class BaseController {
-    private static final Logger logger = Logger.getLogger(BaseController.class.getName());
 
     @Autowired
     private EnvConfig envConfig;

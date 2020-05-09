@@ -7,25 +7,19 @@ import com.pasindu15.demo.library.domain.entities.dto.BookResponseCoreEntity;
 import com.pasindu15.demo.library.domain.exception.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class BookManager {
-    private static final Logger logger = Logger.getLogger(BookManager.class.getName());
 
     @Autowired
     BookRepositoryInterface bookRepository;
 
-    @Autowired
-    BookResponseCoreEntity bookResponse;
-
     public BookResponseCoreEntity add(Book book) throws DomainException {
-        bookRepository.save(book);
+        Book b = bookRepository.save(book);
 
+        BookResponseCoreEntity bookResponse = new BookResponseCoreEntity();
         bookResponse.setCode("0000");
         bookResponse.setMessage("Success");
         bookResponse.setData("BookId :"+book.getId());
@@ -36,28 +30,25 @@ public class BookManager {
     public Book findBookById(Integer id)throws DomainException{
         Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent()){
-            throw  domainError("Book not found","0001");
+            throw  domainError("0001","Book not found");
         }
         return book.get();
     }
-    public List<Book> getAllBooks()throws DomainException{
+    public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    public BookResponseCoreEntity deleteBook(Integer id) throws Exception{
-        try {
-            bookRepository.deleteById(id);
-        }catch (Exception ex){
-            throw domainError("0002","Book not found for given id");
-        }
+    public BookResponseCoreEntity deleteBook(Integer id){
+        bookRepository.deleteById(id);
 
+        BookResponseCoreEntity bookResponse = new BookResponseCoreEntity();
         bookResponse.setCode("0000");
         bookResponse.setMessage("Success");
         bookResponse.setData("BookId :"+id);
         return bookResponse;
     }
 
-    private DomainException domainError(String code, String msg){
+    public DomainException domainError(String code, String msg){
         return new DomainException(msg,code);
     }
 
