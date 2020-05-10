@@ -17,12 +17,14 @@ public class BookManager {
     BookRepositoryInterface bookRepository;
 
     public BookResponseCoreEntity add(Book book) throws DomainException {
-        Book b = bookRepository.save(book);
-
+        Book bookRes = bookRepository.save(book);
         BookResponseCoreEntity bookResponse = new BookResponseCoreEntity();
+        if(bookRes == null){
+            throw  createDomainError("0001","Add Book failure");
+        }
         bookResponse.setCode("0000");
         bookResponse.setMessage("Success");
-        bookResponse.setData("BookId :"+book.getId());
+        bookResponse.setData("BookId :"+bookRes.getId());
 
         return bookResponse;
     }
@@ -30,7 +32,7 @@ public class BookManager {
     public Book findBookById(Integer id)throws DomainException{
         Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent()){
-            throw  domainError("0001","Book not found");
+            throw  createDomainError("0002","Book not found");
         }
         return book.get();
     }
@@ -48,7 +50,7 @@ public class BookManager {
         return bookResponse;
     }
 
-    public DomainException domainError(String code, String msg){
+    public DomainException createDomainError(String code, String msg){
         return new DomainException(msg,code);
     }
 

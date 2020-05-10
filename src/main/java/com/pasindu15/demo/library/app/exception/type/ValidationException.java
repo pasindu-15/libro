@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.validation.ConstraintViolation;
 import java.util.Set;
 
-@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ValidationException extends RuntimeException {
     private Set<ConstraintViolation<RequestEntityInterface>> errors;
 

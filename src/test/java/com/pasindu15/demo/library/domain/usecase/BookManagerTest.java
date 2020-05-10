@@ -45,7 +45,7 @@ class BookManagerTest {
         when(bookRepository.findById(1)).thenReturn(java.util.Optional.of(book1));
         Book book2 = bookManager.findBookById(1);
         assertEquals(book2.getId(),1);
-        DomainException e = bookManager.domainError("0001","Book not found");
+        DomainException e = bookManager.createDomainError("0001","Book not found");
         try {
             when(bookRepository.findById(2)).thenReturn(Optional.empty());
             bookManager.findBookById(2);
