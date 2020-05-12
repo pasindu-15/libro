@@ -33,7 +33,7 @@ class BookManagerTest {
         when(bookRepository.save(book)).thenReturn(book);
         BookResponseCoreEntity bookResponseCoreEntity = bookManager.add(book);
         assertEquals(bookResponseCoreEntity.getCode(),"0000");
-        DomainException e = bookManager.createDomainError("0001","Add Book failure");
+        DomainException e = new DomainException("0001","Add Book failure");
         try {
             when(bookRepository.save(book)).thenReturn(null);
             bookManager.add(book);
@@ -49,7 +49,7 @@ class BookManagerTest {
         when(bookRepository.findById(1)).thenReturn(java.util.Optional.of(book1));
         Book book2 = bookManager.findBookById(1);
         assertEquals(book2.getId(),1);
-        DomainException e = bookManager.createDomainError("0002","Book not found");
+        DomainException e = new DomainException("0002","Book not found");
         try {
             when(bookRepository.findById(2)).thenReturn(Optional.empty());
             bookManager.findBookById(2);

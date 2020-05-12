@@ -48,7 +48,7 @@ public class BookManager {
         return bookResponse;
     }
 
-    public DomainException createDomainError(String code, String msg){
+    private DomainException createDomainError(String code, String msg){
         return new DomainException(msg,code);
     }
 
