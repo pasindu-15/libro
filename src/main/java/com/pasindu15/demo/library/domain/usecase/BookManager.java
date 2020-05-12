@@ -18,12 +18,10 @@ public class BookManager {
 
     public BookResponseCoreEntity add(Book book) throws DomainException {
         Book bookRes = bookRepository.save(book);
-        BookResponseCoreEntity bookResponse = new BookResponseCoreEntity();
-        if(bookRes == null){
+        if(bookRes == null)
             throw  createDomainError("0001","Add Book failure");
-        }
-        bookResponse.setCode("0000");
-        bookResponse.setMessage("Success");
+
+        BookResponseCoreEntity bookResponse = new BookResponseCoreEntity("0000","Success");
         bookResponse.setData("BookId :"+bookRes.getId());
 
         return bookResponse;

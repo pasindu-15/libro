@@ -28,24 +28,28 @@ class BookManagerTest {
     BookManager bookManager;
 
     @Test
-    void add() throws DomainException {
+    void testAdd() throws DomainException {
         Book book = new Book("Test Name","Test Type","Test Author");
-
         when(bookRepository.save(book)).thenReturn(book);
         BookResponseCoreEntity bookResponseCoreEntity = bookManager.add(book);
-
         assertEquals(bookResponseCoreEntity.getCode(),"0000");
-
+        DomainException e = bookManager.createDomainError("0001","Add Book failure");
+        try {
+            when(bookRepository.save(book)).thenReturn(null);
+            bookManager.add(book);
+        }catch (DomainException ex){
+            assertEquals(ex,e);
+        }
     }
 
     @Test
-    void findBookById() throws DomainException {
+    void testFindBookById() throws DomainException {
         Book book1  = new Book();
         book1.setId(1);
         when(bookRepository.findById(1)).thenReturn(java.util.Optional.of(book1));
         Book book2 = bookManager.findBookById(1);
         assertEquals(book2.getId(),1);
-        DomainException e = bookManager.createDomainError("0001","Book not found");
+        DomainException e = bookManager.createDomainError("0002","Book not found");
         try {
             when(bookRepository.findById(2)).thenReturn(Optional.empty());
             bookManager.findBookById(2);
@@ -55,7 +59,7 @@ class BookManagerTest {
     }
 
     @Test
-    void getAllBooks() throws DomainException {
+    void testGetAllBooks() throws DomainException {
         List<Book> books = new ArrayList<>();
         books.add(new Book("Test Name1","Test Type1","Test Author1"));
         books.add(new Book("Test Name2","Test Type2","Test Author2"));
@@ -68,7 +72,7 @@ class BookManagerTest {
     }
 
     @Test
-    void deleteBook() throws Exception {
+    void testDeleteBook() throws Exception {
 
         doNothing().when(bookRepository).deleteById(any(Integer.class));
         doAnswer((i)->{

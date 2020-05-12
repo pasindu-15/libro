@@ -5,6 +5,14 @@ public class BookResponseCoreEntity {
     String message;
     String data;
 
+    public BookResponseCoreEntity() {
+    }
+
+    public BookResponseCoreEntity(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
     public String getCode() {
         return code;
     }
