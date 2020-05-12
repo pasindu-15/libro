@@ -1,4 +1,4 @@
-<h1> Libro
+# Libro
 
 Libro is a sample REST API base Spring Boot project which perform CRUD operations.
 Code structure follows Uncle Bob's Clean Architecture concept with following features.
@@ -20,7 +20,7 @@ database schema
 
 Mockito framework is used for mocking repository in testing.
     
-<h3>Control Flow of the Application
+### Control Flow of the Application
     
 ![Image of control-flow](https://github.com/pasindu-15/libro/blob/master/images/control-flow.png)
 
