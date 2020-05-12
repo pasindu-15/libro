@@ -11,7 +11,7 @@ REST end-points
 
     ./doc/library.postman_collection.json
       
-Mysql use as the data source and hibernate JPA Repository use for data persistence.
+Mysql is used for the data source and hibernate JPA Repository use for data persistence.
 
 database schema 
     
